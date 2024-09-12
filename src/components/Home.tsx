@@ -38,7 +38,7 @@ const Home: React.FC = () => {
       });
       setApplications(response.data.data); // Store the data in state
       setTotal(response.data.total); // Set total number of records
-      message.success("Applications fetched successfully");
+      // message.success("Applications fetched successfully");
     } catch (error) {
       message.error("Failed to fetch applications");
     } finally {
