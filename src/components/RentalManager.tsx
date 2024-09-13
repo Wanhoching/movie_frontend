@@ -121,7 +121,6 @@ const RentalList: React.FC = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2>Rental List</h2>
       <Table
         columns={columns}
         dataSource={rentals}

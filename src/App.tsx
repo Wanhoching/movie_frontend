@@ -4,9 +4,12 @@ import { Layout, Menu } from "antd";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Protected from "./components/Protected";
-import Submit from "./components/Submit";
+import RentalManager from "./components/RentalManager";
 import Home from "./components/Home";
-import RentForm from "./components/RentForm"; // 引入租赁表单组件
+import RentForm from "./components/RentForm";
+import UserRental from "./components/UserRental";
+import Message from "./components/Message";
+import AdminMessage from "./components/AdminMessage";
 
 const { Header, Content } = Layout;
 
@@ -17,19 +20,19 @@ const App: React.FC = () => {
         <Header>
           <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["/"]}>
             <Menu.Item key="home">
-              <Link to="/">Home</Link>
-            </Menu.Item>
-            <Menu.Item key="login">
-              <Link to="/login">Login</Link>
-            </Menu.Item>
-            <Menu.Item key="register">
-              <Link to="/register">Register</Link>
+              <Link to="/home">Home</Link>
             </Menu.Item>
             <Menu.Item key="protected">
-              <Link to="/protected">Protected</Link>
+              <Link to="/userRent">Rent</Link>
             </Menu.Item>
             <Menu.Item key="submit">
               <Link to="/submit">Submit</Link>
+            </Menu.Item>
+            <Menu.Item key="message">
+              <Link to="/Message">Message</Link>
+            </Menu.Item>
+            <Menu.Item key="logout">
+              <Link to="/login">Logout</Link>
             </Menu.Item>
           </Menu>
         </Header>
@@ -37,11 +40,13 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/protected" element={<Protected />} />
-            <Route path="/submit" element={<Submit />} />
-            <Route path="/rent/:id" element={<RentForm />} />{" "}
-            {/* 新增租赁路由 */}
+            <Route path="/home" element={<Protected />} />
+            <Route path="/RentalManager" element={<RentalManager />} />
+            <Route path="/rent/:id" element={<RentForm />} />
+            <Route path="/userRent" element={<UserRental />} />
             <Route path="/" element={<Home />} />
+            <Route path="/Message" element={<Message />} />
+            <Route path="/AdminMessage" element={<AdminMessage />} />
           </Routes>
         </Content>
       </Layout>

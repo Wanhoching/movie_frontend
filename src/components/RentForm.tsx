@@ -3,7 +3,7 @@ import { Form, Input, Button, message, DatePicker } from "antd";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat"; // 导入插件
+import customParseFormat from "dayjs/plugin/customParseFormat"; // Import plugin
 
 dayjs.extend(customParseFormat);
 
@@ -27,7 +27,7 @@ const RentForm: React.FC = () => {
 
   const onFinish = async (values: any) => {
     setLoading(true);
-    const token = localStorage.getItem("token"); // 从 localStorage 获取 token
+    const token = localStorage.getItem("token"); // Get token from localStorage
     try {
       await axios.post(
         "http://localhost:3000/rentals",
@@ -39,14 +39,14 @@ const RentForm: React.FC = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // 设置 Authorization header
+            Authorization: `Bearer ${token}`, // Set Authorization header
           },
         }
       );
-      message.success("租赁申请提交成功！");
+      message.success("Rental request submitted successfully!");
       navigate("/");
     } catch (error) {
-      message.error("提交失败，请稍后重试。");
+      message.error("Submission failed. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -72,31 +72,33 @@ const RentForm: React.FC = () => {
           borderRadius: "8px",
         }}
       >
-        <h2 style={{ textAlign: "center" }}>租赁视频: {videoName}</h2>
+        <h2 style={{ textAlign: "center" }}>Rent Video: {videoName}</h2>
         <Form onFinish={onFinish} layout="vertical">
           <Form.Item
-            label="租赁描述"
+            label="Rental Description"
             name="description"
-            rules={[{ required: true, message: "请输入租赁描述" }]}
+            rules={[
+              { required: true, message: "Please enter a rental description" },
+            ]}
           >
-            <Input.TextArea placeholder="输入租赁描述" rows={4} />
+            <Input.TextArea placeholder="Enter rental description" rows={4} />
           </Form.Item>
 
           <Form.Item
-            label="选择租赁日期"
+            label="Select Rental Date"
             name="rentalDate"
-            rules={[{ required: true, message: "请选择租赁日期" }]}
+            rules={[{ required: true, message: "Please select a rental date" }]}
           >
             <DatePicker
               format="YYYY-MM-DD"
               style={{ width: "100%" }}
-              placeholder="选择租赁日期"
+              placeholder="Select rental date"
             />
           </Form.Item>
 
           <Form.Item>
             <Button type="primary" htmlType="submit" loading={loading} block>
-              提交申请
+              Submit Rental Request
             </Button>
           </Form.Item>
         </Form>
