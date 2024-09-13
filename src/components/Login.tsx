@@ -16,8 +16,10 @@ const Login: React.FC = () => {
     try {
       const response = await axios.post("http://localhost:3000/login", values);
       localStorage.setItem("token", response.data.token);
+      console.log(response.data.token);
+
       message.success("Login successful!");
-      navigate("/protected"); // 登录成功后跳转到受保护页面
+      navigate("/protected");
     } catch (error) {
       message.error("Invalid username or password");
     } finally {
