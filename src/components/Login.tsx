@@ -1,4 +1,3 @@
-// src/components/Login.tsx
 import React, { useState } from "react";
 import { Button, Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
@@ -16,10 +15,13 @@ const Login: React.FC = () => {
     try {
       const response = await axios.post("http://localhost:3000/login", values);
       localStorage.setItem("token", response.data.token);
-      console.log(response.data.token);
+      localStorage.setItem("role", response.data.role); // 将角色存储在 localStorage
+      console.log(response.data);
+
+      console.log(response.data.token, response.data.role);
 
       message.success("Login successful!");
-      navigate("/protected");
+      navigate("/home");
     } catch (error) {
       message.error("Invalid username or password");
     } finally {

@@ -21,7 +21,7 @@ const UserRentalList: React.FC = () => {
         });
         setRentals(response.data);
       } catch (error) {
-        message.error("Failed to fetch rental records");
+        // message.e  rror("Failed to fetch rental records");
       } finally {
         setLoading(false);
       }

@@ -78,19 +78,6 @@ const Home: React.FC = () => {
         }
       />
 
-      {/* 状态筛选 */}
-      <Select
-        placeholder="Filter by status"
-        onChange={(value) => setStatusFilter(value)}
-        style={{ marginBottom: 20, width: "100%", borderRadius: "8px" }}
-        allowClear
-      >
-        <Option value="new">New</Option>
-        <Option value="pending">Pending</Option>
-        <Option value="accepted">Accepted</Option>
-        <Option value="rejected">Rejected</Option>
-      </Select>
-
       {/* 视频展示 */}
       <Row gutter={[16, 16]}>
         {videos.map((video) => (
@@ -99,7 +86,11 @@ const Home: React.FC = () => {
               hoverable
               cover={
                 <video
-                  src={video.video}
+                  src={
+                    video.video.startsWith("http")
+                      ? video.video
+                      : `http://localhost:3000${video.video}`
+                  }
                   controls
                   style={{ width: "100%", borderRadius: "8px" }}
                 />
@@ -119,16 +110,14 @@ const Home: React.FC = () => {
                   <span style={{ color: "#8c8c8c" }}>{video.description}</span>
                 }
               />
-              <div style={{ marginTop: 10, color: "#1890ff" }}>
-                Status: {video.status}
-              </div>
-              {/* 租赁按钮 */}
+
+              {/* rental */}
               <Button
                 type="primary"
                 style={{ marginTop: 10 }}
                 onClick={() => handleRent(video.id)}
               >
-                租赁
+                rental
               </Button>
             </Card>
           </Col>

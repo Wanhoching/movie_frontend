@@ -44,7 +44,7 @@ const RentForm: React.FC = () => {
         }
       );
       message.success("Rental request submitted successfully!");
-      navigate("/");
+      navigate("/home");
     } catch (error) {
       message.error("Submission failed. Please try again later.");
     } finally {

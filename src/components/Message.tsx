@@ -19,7 +19,7 @@ const Communication: React.FC = () => {
         });
         setUserMessages(response.data);
       } catch (error) {
-        message.error("Failed to fetch messages");
+        // message.error("Failed to fetch messages");
       }
     };
 

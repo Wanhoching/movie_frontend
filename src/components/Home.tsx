@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Table, message, Card, Typography, Input, Select } from "antd";
+import {
+  Table,
+  message,
+  Card,
+  Typography,
+  Input,
+  Button,
+  Popconfirm,
+} from "antd";
 import axios from "axios";
 import "./Home.css"; // 引入自定义样式
 
 const { Title } = Typography;
-const { Option } = Select;
 
 // Define the application data structure
 interface Application {
   id: number;
   name: string;
-  status: string;
   description: string;
   video: string;
 }
@@ -19,7 +25,6 @@ const Home: React.FC = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [nameFilter, setNameFilter] = useState<string>(""); // Search by name
-  const [statusFilter, setStatusFilter] = useState<string>(""); // Filter by status
   const [currentPage, setCurrentPage] = useState<number>(1); // Current page
   const [pageSize, setPageSize] = useState<number>(5); // Page size
   const [total, setTotal] = useState<number>(0); // Total records
@@ -31,14 +36,12 @@ const Home: React.FC = () => {
       const response = await axios.get("http://localhost:3000/videos", {
         params: {
           name: nameFilter,
-          status: statusFilter,
           page,
           pageSize,
         },
       });
       setApplications(response.data.data); // Store the data in state
       setTotal(response.data.total); // Set total number of records
-      // message.success("Applications fetched successfully");
     } catch (error) {
       message.error("Failed to fetch applications");
     } finally {
@@ -48,7 +51,18 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     fetchApplications(currentPage, pageSize);
-  }, [nameFilter, statusFilter, currentPage, pageSize]); // Refetch when filters or pagination change
+  }, [nameFilter, currentPage, pageSize]); // Refetch when filters or pagination change
+
+  // 删除视频
+  const handleDelete = async (id: number) => {
+    try {
+      await axios.delete(`http://localhost:3000/videos/${id}`);
+      message.success("Video deleted successfully");
+      fetchApplications(currentPage, pageSize); // Refresh the list
+    } catch (error) {
+      message.error("Failed to delete video");
+    }
+  };
 
   // Define columns for the table
   const columns = [
@@ -63,11 +77,6 @@ const Home: React.FC = () => {
       key: "name",
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-    },
-    {
       title: "Description",
       dataIndex: "description",
       key: "description",
@@ -76,7 +85,29 @@ const Home: React.FC = () => {
       title: "Video",
       dataIndex: "video",
       key: "video",
-      render: (text: string) => <a href={text}>View Video</a>, // Renders as a link
+      render: (text: string) => (
+        <a
+          href={text.startsWith("http") ? text : `http://localhost:3000${text}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View Video
+        </a>
+      ),
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (text: any, record: Application) => (
+        <Popconfirm
+          title="Are you sure to delete this video?"
+          onConfirm={() => handleDelete(record.id)}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button danger>Delete</Button>
+        </Popconfirm>
+      ),
     },
   ];
 
@@ -93,19 +124,6 @@ const Home: React.FC = () => {
           onChange={(e) => setNameFilter(e.target.value)}
           style={{ marginBottom: 20, width: "100%" }}
         />
-
-        {/* Filter by status */}
-        <Select
-          placeholder="Filter by status"
-          onChange={(value) => setStatusFilter(value)}
-          style={{ marginBottom: 20, width: "100%" }}
-          allowClear
-        >
-          <Option value="new">New</Option>
-          <Option value="pending">Pending</Option>
-          <Option value="accepted">Accepted</Option>
-          <Option value="rejected">Rejected</Option>
-        </Select>
 
         <Table
           columns={columns}
